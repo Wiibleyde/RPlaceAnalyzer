@@ -118,8 +118,8 @@ def generate_image(data):
     canvas = np.zeros((1001, 1001, 3), dtype=np.uint8)
     for row in data:
         try:
-            x = row['x_coordinate']
-            y = row['y_coordinate']
+            y = row['x_coordinate']
+            x = row['y_coordinate']
             color = row['color']
             color = COLORS[color]
             canvas[x, y] = color
@@ -134,8 +134,8 @@ def generate_heatmap(data):
     canvas = np.zeros((1001, 1001), dtype=np.uint8)
     for row in data:
         try:
-            x = row['x_coordinate']
-            y = row['y_coordinate']
+            y = row['x_coordinate']
+            x = row['y_coordinate']
             canvas[x, y] += 1
         except Exception as e:
             print(f"Error processing row: {row} with error: {e}")
