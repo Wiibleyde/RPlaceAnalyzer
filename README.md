@@ -1,5 +1,7 @@
 # RPlace Analyzer (for 2017 only)
 
+<img src="./img/rplace-logo.png" alt="drawing" width="100%">
+
 ## Sommaire
 
 - [Introduction](#introduction)
