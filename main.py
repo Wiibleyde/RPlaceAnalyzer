@@ -141,6 +141,7 @@ def generate_heatmap(data):
             print(f"Error processing row: {row} with error: {e}")
             continue
     plt.imshow(canvas, cmap='hot', interpolation='nearest')
+    plt.axis(False)
     plt.show()
 
 def load_config():
