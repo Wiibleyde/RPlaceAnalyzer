@@ -7,6 +7,14 @@ from datetime import datetime
 import requests
 from os import path, makedirs
 import argparse
+import yaml
+
+CONFIG = {
+    'db': {
+        'host': 'MONGODBIP',
+        'port': 0000,
+    },
+}
 
 CSV_LINK = "https://nathan.bonnell.fr/public/tile_placements.csv"
 FILES_PATH = './dataset/'
@@ -31,7 +39,7 @@ COLORS = {
 }
 
 def init_db():
-    client = MongoClient('localhost', 27017)
+    client = MongoClient(CONFIG['db']['host'], CONFIG['db']['port'])
     db = client['rplace']
     return db
 
@@ -135,6 +143,11 @@ def generate_heatmap(data):
     plt.imshow(canvas, cmap='hot', interpolation='nearest')
     plt.show()
 
+def load_config():
+    with open('config.yaml') as f:
+        config = yaml.load(f, Loader=yaml.FullLoader)
+    return config
+
 def parse_args():
     parser = argparse.ArgumentParser(description='Generate image from r/place data')
     parser.add_argument('-i', '--init', action='store_true', help='Download file and initialize DB and load data')
@@ -143,6 +156,7 @@ def parse_args():
     return parser.parse_args()
 
 if __name__ == '__main__':
+    CONFIG = load_config()
     args = parse_args()
     db = init_db()
     collection = init_collection(db)
