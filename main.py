@@ -4,27 +4,12 @@ import matplotlib.pyplot as plt
 import pandas as pd
 from pymongo import MongoClient
 from datetime import datetime
+import requests
+from os import path, makedirs
+import argparse
 
 CSV_LINK = "https://nathan.bonnell.fr/public/tile_placements.csv"
 FILES_PATH = './dataset/'
-
-# index	color code
-# 0	#FFFFFF
-# 1	#E4E4E4
-# 2	#888888
-# 3	#222222
-# 4	#FFA7D1
-# 5	#E50000
-# 6	#E59500
-# 7	#A06A42
-# 8	#E5D900
-# 9	#94E044
-# 10	#02BE01
-# 11	#00E5F0
-# 12	#0083C7
-# 13	#0000EA
-# 14	#E04AFF
-# 15	#820080
 
 COLORS = {
     0: [255, 255, 255],
@@ -53,7 +38,14 @@ def init_db():
 def init_collection(db):
     return db['rplace_history_2017']
 
-# # Load all files from 2022_place_canvas_history-000000000000.csv.gzip to 2022_place_canvas_history-000000000078.csv.gzip
+def download_file():
+    if not path.exists(FILES_PATH):
+        makedirs(FILES_PATH)
+    response = requests.get(CSV_LINK)
+    with open(FILES_PATH + 'tile_placements.csv', 'wb') as f:
+        f.write(response.content)
+
+# Load all files from 2022_place_canvas_history-000000000000.csv.gzip to 2022_place_canvas_history-000000000078.csv.gzip
 # def load_files():
 #     files = []
 #     for i in range(79):
@@ -71,10 +63,12 @@ def load_data(files):
     return data
 
 def load_data_to_db(files, collection):
+    # Clear collection
+    collection.delete_many({})
     for file in files:
         with open(file, 'rb') as f:
             df = pd.read_csv(f)
-            print(f"Loading data from file: {file}")
+            print(f"Loading data from file: {file} (this may take a while (again))")
             records = df.to_dict(orient='records')
             for record in records:
                 # 2022
@@ -97,9 +91,13 @@ def load_data_to_db(files, collection):
                 #     record.pop('coordinate')
 
                 # 2017
-                record['ts'] = datetime.fromtimestamp(record['ts'] / 1000)
-                record['x_coordinate'] = int(record['x_coordinate'])
-                record['y_coordinate'] = int(record['y_coordinate'])
+                try:
+                    record['ts'] = datetime.fromtimestamp(record['ts'] / 1000)
+                    record['x_coordinate'] = int(record['x_coordinate'])
+                    record['y_coordinate'] = int(record['y_coordinate'])
+                except Exception as e:
+                    print(f"Error processing record: {record} with error: {e}")
+                    continue
             collection.insert_many(records)
             print(f"Data from file: {file} loaded")
 
@@ -110,8 +108,6 @@ def get_data(collection, query):
 # Generate image from data using matplotlib
 def generate_image(data):
     canvas = np.zeros((1001, 1001, 3), dtype=np.uint8)
-    # Invert y axis
-    canvas = np.flipud(canvas)
     for row in data:
         try:
             x = row['x_coordinate']
@@ -125,26 +121,51 @@ def generate_image(data):
     plt.imshow(canvas)
     plt.show()
 
-def generate_image_old(data):
-    canvas = np.zeros((1001, 1001, 3), dtype=np.uint8)
-    colors = COLORS
-    valid_data = [(row['x_coordinate'], row['y_coordinate'], colors[row['color']]) for row in data if all(key in row for key in ('x_coordinate', 'y_coordinate', 'color'))]
-    x, y, color_data = zip(*valid_data)
-    canvas[x, y] = color_data
-    plt.imshow(canvas)
+# Generate heatmap from data using matplotlib
+def generate_heatmap(data):
+    canvas = np.zeros((1001, 1001), dtype=np.uint8)
+    for row in data:
+        try:
+            x = row['x_coordinate']
+            y = row['y_coordinate']
+            canvas[x, y] += 1
+        except Exception as e:
+            print(f"Error processing row: {row} with error: {e}")
+            continue
+    plt.imshow(canvas, cmap='hot', interpolation='nearest')
     plt.show()
 
+def parse_args():
+    parser = argparse.ArgumentParser(description='Generate image from r/place data')
+    parser.add_argument('-i', '--init', action='store_true', help='Download file and initialize DB and load data')
+    parser.add_argument('-g', '--generate', action='store_true', help='Generate image from data')
+    parser.add_argument('-hm', '--heatmap', action='store_true', help='Generate heatmap from data')
+    return parser.parse_args()
 
 if __name__ == '__main__':
+    args = parse_args()
     db = init_db()
     collection = init_collection(db)
     print(f"DB and collection initialized")
-    # Load all files
-    # files = load_files()
-    # print(f"Total files: {len(files)} loaded")
-    # load_data_to_db(["./dataset/tile_placements.csv"], collection)
-    # print(f"Data loaded to DB")
-    # Get data from DB
-    data = get_data(collection, {})
-    print(f"Data loaded, generating image...")
-    generate_image(data)
+    if args.init:
+        print("Initializing...", end='\r')
+        print("Downloading file... (this may take a while)")
+        download_file()
+        files = [FILES_PATH + 'tile_placements.csv']
+        print("File downloaded, loading data to DB...", end='\r')
+        load_data_to_db([FILES_PATH + 'tile_placements.csv'], collection)
+        print(f"Data loaded to DB, exiting program")
+        exit(0)
+    elif args.generate:
+        print("Generating image...")
+        data = get_data(collection, {})
+        print(f"Data loaded, generating image... (this may take a while)")
+        generate_image(data)
+    elif args.heatmap:
+        print("Generating heatmap...")
+        data = get_data(collection, {})
+        print(f"Data loaded, generating heatmap... (this may take a while)")
+        generate_heatmap(data)
+    else:
+        print("Please provide an argument")
+        exit(1)
