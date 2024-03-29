@@ -12,7 +12,7 @@
     - [Heatmap de l'événement](#heatmap-de-lévénement)
     - [Graphique du nombre de pixels placés par heure](#graphique-du-nombre-de-pixels-placés-par-heure)
     - [Diagramme des couleurs de l'événement](#diagramme-des-couleurs-de-lévénement)
-    - [Liste des utilisateurs/bots participants à l'événement](#liste-des-utilisateursbots-participants-à-lévénement)
+    <!-- - [Liste des utilisateurs/bots participants à l'événement](#liste-des-utilisateursbots-participants-à-lévénement) -->
 
 RPlace Analyzer est un outil permetttant d'analyser les données de l'événement RPlace 2017. Il permet de visualiser les données de l'événement.
 
@@ -64,5 +64,5 @@ Et c'est tout !
 - ![Color Piechart](./img/color-piechart.png)
     - Sur ce diagramme, on peut voir que le noir est la couleur la plus utilisée, suivie du blanc et du rouge. L'utilisation majoritaire du noir peut s'expliquer par le fait que les utilisateurs ont utilisé cette couleur pour effacer des dessins déjà présents ou créer ce que l'on nomme le "Void".
 
-- Liste des utilisateurs/bots participants à l'événement :
+<!-- ### Liste des utilisateurs/bots participants à l'événement : -->
 

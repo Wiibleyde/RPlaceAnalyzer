@@ -39,31 +39,45 @@ COLORS = {
     15: [130, 0, 128]
 }
 
-def init_db():
+def init_db() -> MongoClient:
+    """Initiate DB connection
+
+    Returns:
+        MongoClient: MongoDB client
+    """
     client = MongoClient(CONFIG['db']['host'], CONFIG['db']['port'])
     db = client['rplace']
     return db
 
-def init_collection(db):
+def init_collection(db) -> MongoClient:
+    """Initiate collection
+
+    Args:
+        db (MongoClient): MongoDB client
+
+    Returns:
+        MongoClient: MongoDB collection
+    """
     return db['rplace_history_2017']
 
-def download_file():
+def download_file() -> None:
+    """Download file from CSV_LINK
+    """
     if not path.exists(FILES_PATH):
         makedirs(FILES_PATH)
     response = requests.get(CSV_LINK)
     with open(FILES_PATH + 'tile_placements.csv', 'wb') as f:
         f.write(response.content)
 
-# Load all files from 2022_place_canvas_history-000000000000.csv.gzip to 2022_place_canvas_history-000000000078.csv.gzip
-# def load_files():
-#     files = []
-#     for i in range(79):
-#         file_path = FILES_PATH + '2022_place_canvas_history-' + str(i).zfill(12) + '.csv.gzip'
-#         files.append(file_path)
-#     return files
+def load_data(files) -> list:
+    """Load data from files
 
-# Load data from files
-def load_data(files):
+    Args:
+        files (list): List of files
+
+    Returns:
+        list: List of dataframes
+    """
     data = []
     for file in files:
         with gzip.open(file, 'rb') as f:
@@ -71,8 +85,13 @@ def load_data(files):
             data.append(df)
     return data
 
-def load_data_to_db(files, collection):
-    # Clear collection
+def load_data_to_db(files, collection) -> None:
+    """Load data to MongoDB
+
+    Args:
+        files (list): List of files
+        collection (MongoClient): MongoDB collection
+    """
     collection.delete_many({})
     for file in files:
         with open(file, 'rb') as f:
@@ -80,26 +99,6 @@ def load_data_to_db(files, collection):
             print(f"Loading data from file: {file} (this may take a while (again))")
             records = df.to_dict(orient='records')
             for record in records:
-                # 2022
-                # try:
-                #     record['timestamp'] = datetime.strptime(record['timestamp'], '%Y-%m-%d %H:%M:%S.%f UTC')
-                # except Exception as e:
-                #     record['timestamp'] = datetime.strptime(record['timestamp'], '%Y-%m-%d %H:%M:%S UTC')
-                # try:
-                #     coords = record['coordinate']
-                #     x, y = [int(i) for i in coords.split(',')]
-                #     record['x'] = x
-                #     record['y'] = y
-                #     record.pop('coordinate')
-                # except Exception as e:
-                #     squareP1, squareP2, squareP3, squareP4 = [int(i) for i in coords.split(',')]
-                #     record['squareP1'] = squareP1
-                #     record['squareP2'] = squareP2
-                #     record['squareP3'] = squareP3
-                #     record['squareP4'] = squareP4
-                #     record.pop('coordinate')
-
-                # 2017
                 try:
                     record['ts'] = datetime.fromtimestamp(record['ts'] / 1000)
                     record['x_coordinate'] = int(record['x_coordinate'])
@@ -110,12 +109,25 @@ def load_data_to_db(files, collection):
             collection.insert_many(records)
             print(f"Data from file: {file} loaded")
 
-def get_data(collection, query):
+def get_data(collection, query) -> list:
+    """Get data from MongoDB
+
+    Args:
+        collection (MongoClient): MongoDB collection
+        query (dict): Query
+
+    Returns:
+        list: List of data
+    """
     result = collection.find(query)
     return result
 
-# Generate image from data using matplotlib
-def generate_image(data):
+def generate_image(data) -> None:
+    """Generate image from data
+
+    Args:
+        data (list): List of data
+    """
     canvas = np.zeros((1001, 1001, 3), dtype=np.uint8)
     for row in data:
         try:
@@ -130,8 +142,12 @@ def generate_image(data):
     plt.imshow(canvas)
     plt.show()
 
-# Generate heatmap from data using matplotlib
-def generate_heatmap(data):
+def generate_heatmap(data) -> None:
+    """Generate heatmap from data
+
+    Args:
+        data (list): List of data
+    """
     canvas = np.zeros((1001, 1001), dtype=np.uint8)
     for row in data:
         try:
@@ -145,12 +161,16 @@ def generate_heatmap(data):
     plt.axis(False)
     plt.show()
 
-def generate_histogram(data):
+def generate_histogram(data) -> None:
+    """Generate histogram from data
+
+    Args:
+        data (list): List of data
+    """
     histogram_data = {}
     for row in data:
         try:
             timestamp = row['ts']
-            # Truncate timestamp to date only (year, month, day, hour)
             timestamp = timestamp.replace(minute=0, second=0, microsecond=0)
             if timestamp in histogram_data:
                 histogram_data[timestamp] += 1
@@ -159,20 +179,22 @@ def generate_histogram(data):
         except Exception as e:
             print(f"Error processing row: {row} with error: {e}")
             continue
-
-    # Generate histogram
     fig, ax = plt.subplots()
-    ax.bar(histogram_data.keys(), histogram_data.values(), width=0.03)  # Use bar chart for pre-counted data
-    ax.xaxis.set_major_locator(mdates.HourLocator(interval = 2))  # Set major ticks every hour
-    ax.xaxis.set_major_formatter(mdates.DateFormatter('%Y-%m-%d %Hh'))  # Format x-axis to show hour and minute
-
+    ax.bar(histogram_data.keys(), histogram_data.values(), width=0.03)
+    ax.xaxis.set_major_locator(mdates.HourLocator(interval = 2))
+    ax.xaxis.set_major_formatter(mdates.DateFormatter('%Y-%m-%d %Hh'))
     plt.xlabel('Hour')
     plt.ylabel('Count')
     plt.xticks(rotation=45)
     plt.title('Histogram of R/Place 2017 Data')
     plt.show()
 
-def generate_color_diagram(data):
+def generate_color_diagram(data) -> None:
+    """Generate circular diagram of color usage from data
+
+    Args:
+        data (list): List of data
+    """
     color_data = {}
     for row in data:
         try:
@@ -186,22 +208,29 @@ def generate_color_diagram(data):
             continue
     colors = [COLORS[color_id] for color_id in color_data.keys()]
     colors = [[channel / 255 for channel in color] for color in colors]
-    
     fig, ax = plt.subplots()
     wedges, texts, autotexts = ax.pie(color_data.values(), autopct='%1.1f%%', pctdistance=1.1, colors=colors)
-
     plt.setp(autotexts, size=8, weight="bold")
     ax.axis('equal')
-
     plt.title('Color Diagram of Data')
     plt.show()
 
-def load_config():
+def load_config() -> dict:
+    """Load config from config.yaml
+
+    Returns:
+        dict: Config
+    """
     with open('config.yaml') as f:
         config = yaml.load(f, Loader=yaml.FullLoader)
     return config
 
-def parse_args():
+def parse_args() -> argparse.Namespace:
+    """Parse arguments
+
+    Returns:
+        argparse.Namespace: Arguments
+    """
     parser = argparse.ArgumentParser(description='Generate image from r/place data')
     parser.add_argument('-i', '--init', action='store_true', help='Download file and initialize DB and load data')
     parser.add_argument('-g', '--generate', action='store_true', help='Generate image from data (pixel placement)')
