@@ -187,8 +187,12 @@ def generate_color_diagram(data):
     colors = [COLORS[color_id] for color_id in color_data.keys()]
     colors = [[channel / 255 for channel in color] for color in colors]
     fig, ax = plt.subplots()
-    ax.pie(color_data.values(), labels=color_data.keys(), autopct='%1.1f%%', colors=colors)
-    plt.title('Color Diagram of R/Place 2017 Data')
+    wedges, texts, autotexts = ax.pie(color_data.values(), autopct='%1.1f%%', pctdistance=1.1, colors=colors)
+
+    plt.setp(autotexts, size=8, weight="bold")
+    ax.axis('equal')  # Equal aspect ratio ensures that pie is drawn as a circle.
+
+    plt.title('Color Diagram of Data')
     plt.show()
 
 def load_config():

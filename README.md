@@ -46,7 +46,9 @@ Et c'est tout !
 
 - Heatmap de l'événement :
 
-- Diagramme des couleurs les plus utilisées :
+- Diagramme des couleurs de l'événement :
+![Color Piechart](./img/color-piechart.png)
+Sur ce diagramme, on peut voir que le noir est la couleur la plus utilisée, suivie du blanc et du rouge. L'utilisation majoritaire du noir peut s'expliquer par le fait que les utilisateurs ont utilisé cette couleur pour effacer des dessins déjà présents ou créer ce que l'on nomme le "Void".
 
 - Liste des utilisateurs/bots participants à l'événement :
 
