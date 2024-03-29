@@ -186,11 +186,12 @@ def generate_color_diagram(data):
             continue
     colors = [COLORS[color_id] for color_id in color_data.keys()]
     colors = [[channel / 255 for channel in color] for color in colors]
+    
     fig, ax = plt.subplots()
     wedges, texts, autotexts = ax.pie(color_data.values(), autopct='%1.1f%%', pctdistance=1.1, colors=colors)
 
     plt.setp(autotexts, size=8, weight="bold")
-    ax.axis('equal')  # Equal aspect ratio ensures that pie is drawn as a circle.
+    ax.axis('equal')
 
     plt.title('Color Diagram of Data')
     plt.show()

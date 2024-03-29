@@ -45,12 +45,15 @@ Et c'est tout !
 ![RPlace 2017](./img/rplace_final.png)
 
 - Heatmap de l'événement :
+    - ![Heatmap](./img/heatmap.png)
+        - Sur cette heatmap, on peut voir que les zones les plus actives sont le centre de l'image et les coins. Cepandant on peut voir que sur la heatmap le drapeau américain est très présent, ce qui veut dire qu'il a été beaucoup modifié / défendu.
+        - De même pour le logo rond en bas au milieu, qui a été beaucoup modifié qui semble être le logo de la communauté OSU (qui est en générale très active sur ce genre d'événement).
 
 - Graphique du nombre de pixels placés par heure :
 
 - Diagramme des couleurs de l'événement :
-![Color Piechart](./img/color-piechart.png)
-Sur ce diagramme, on peut voir que le noir est la couleur la plus utilisée, suivie du blanc et du rouge. L'utilisation majoritaire du noir peut s'expliquer par le fait que les utilisateurs ont utilisé cette couleur pour effacer des dessins déjà présents ou créer ce que l'on nomme le "Void".
+    - ![Color Piechart](./img/color-piechart.png)
+        - Sur ce diagramme, on peut voir que le noir est la couleur la plus utilisée, suivie du blanc et du rouge. L'utilisation majoritaire du noir peut s'expliquer par le fait que les utilisateurs ont utilisé cette couleur pour effacer des dessins déjà présents ou créer ce que l'on nomme le "Void".
 
 - Liste des utilisateurs/bots participants à l'événement :
 
