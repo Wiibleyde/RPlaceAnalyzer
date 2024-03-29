@@ -41,8 +41,7 @@ Et c'est tout !
 ## Observations
 
 - Image final de la RPlace de 2017 :
-
-![RPlace 2017](./img/rplace_final.png)
+    - ![RPlace 2017](./img/rplace_final.png)
 
 - Heatmap de l'événement :
     - ![Heatmap](./img/heatmap.png)
