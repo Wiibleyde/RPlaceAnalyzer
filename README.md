@@ -40,4 +40,13 @@ Et c'est tout !
 
 ## Observations
 
-POUR JOEL ICI
+- Image final de la RPlace de 2017 :
+
+- Graphique du nombre de pixels placés par heure :
+
+- Heatmap de l'événement :
+
+- Diagramme des couleurs les plus utilisées :
+
+- Liste des utilisateurs/bots participants à l'événement :
+
