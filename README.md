@@ -8,6 +8,11 @@
 - [Installation](#installation)
 - [Utilisation](#utilisation)
 - [Observations](#observations)
+    - [Image final de la RPlace de 2017](#image-final-de-la-rplace-de-2017)
+    - [Heatmap de l'événement](#heatmap-de-lévénement)
+    - [Graphique du nombre de pixels placés par heure](#graphique-du-nombre-de-pixels-placés-par-heure)
+    - [Diagramme des couleurs de l'événement](#diagramme-des-couleurs-de-lévénement)
+    - [Liste des utilisateurs/bots participants à l'événement](#liste-des-utilisateursbots-participants-à-lévénement)
 
 RPlace Analyzer est un outil permetttant d'analyser les données de l'événement RPlace 2017. Il permet de visualiser les données de l'événement.
 
@@ -40,24 +45,24 @@ Et c'est tout !
 
 ## Observations
 
-- Image final de la RPlace de 2017 :
-    - ![RPlace 2017](./img/rplace_final.png)
+### Image final de la RPlace de 2017 :
+- ![RPlace 2017](./img/rplace_final.png)
 
-- Heatmap de l'événement :
-    - ![Heatmap](./img/heatmap.png)
-        - Sur cette heatmap, on peut voir que les zones les plus actives sont le centre de l'image et les coins. Cepandant on peut voir que sur la heatmap le drapeau américain est très présent, ce qui veut dire qu'il a été beaucoup modifié / défendu.
-        - De même pour le logo rond en bas au milieu, qui a été beaucoup modifié qui semble être le logo de la communauté OSU (qui est en générale très active sur ce genre d'événement).
+### Heatmap de l'événement :
+- ![Heatmap](./img/heatmap.png)
+    - Sur cette heatmap, on peut voir que les zones les plus actives sont le centre de l'image et les coins. Cepandant on peut voir que sur la heatmap le drapeau américain est très présent, ce qui veut dire qu'il a été beaucoup modifié / défendu.
+    - De même pour le logo rond en bas au milieu, qui a été beaucoup modifié qui semble être le logo de la communauté OSU (qui est en générale très active sur ce genre d'événement).
 
-- Graphique du nombre de pixels placés par heure :
-    - ![Histogram](./img/pixel_histogram.png)
-        - Sur ce graphique, on peut remarquer que le nombre de pixels placés par heure est très variable.
-            - Au début de l'événement, le nombre de pixels placés est très faible, ce qui est normal car le R/Place de 2017 était la première édition de ce genre d'événement.
-            - Puis les pics de pixels placés sont chaques jours à 20h, ce qui est probablement dû à la fin des cours / travail pour les utilisateurs.
-            - Le pic le plus important est le 2 avril à 20h, au nombre de 401442 pixels placés.
+### Graphique du nombre de pixels placés par heure :
+- ![Histogram](./img/pixel_histogram.png)
+    - Sur ce graphique, on peut remarquer que le nombre de pixels placés par heure est très variable.
+        - Au début de l'événement, le nombre de pixels placés est très faible, ce qui est normal car le R/Place de 2017 était la première édition de ce genre d'événement.
+        - Puis les pics de pixels placés sont chaques jours à 20h, ce qui est probablement dû à la fin des cours / travail pour les utilisateurs.
+        - Le pic le plus important est le 2 avril à 20h, au nombre de 401442 pixels placés.
 
-- Diagramme des couleurs de l'événement :
-    - ![Color Piechart](./img/color-piechart.png)
-        - Sur ce diagramme, on peut voir que le noir est la couleur la plus utilisée, suivie du blanc et du rouge. L'utilisation majoritaire du noir peut s'expliquer par le fait que les utilisateurs ont utilisé cette couleur pour effacer des dessins déjà présents ou créer ce que l'on nomme le "Void".
+### Diagramme des couleurs de l'événement :
+- ![Color Piechart](./img/color-piechart.png)
+    - Sur ce diagramme, on peut voir que le noir est la couleur la plus utilisée, suivie du blanc et du rouge. L'utilisation majoritaire du noir peut s'expliquer par le fait que les utilisateurs ont utilisé cette couleur pour effacer des dessins déjà présents ou créer ce que l'on nomme le "Void".
 
 - Liste des utilisateurs/bots participants à l'événement :
 
