@@ -169,7 +169,26 @@ def generate_histogram(data):
     plt.xlabel('Hour')
     plt.ylabel('Count')
     plt.xticks(rotation=45)
-    plt.title('Histogram of Data')
+    plt.title('Histogram of R/Place 2017 Data')
+    plt.show()
+
+def generate_color_diagram(data):
+    color_data = {}
+    for row in data:
+        try:
+            color_id = row['color']
+            if color_id in color_data:
+                color_data[color_id] += 1
+            else:
+                color_data[color_id] = 1
+        except Exception as e:
+            print(f"Error processing row: {row} with error: {e}")
+            continue
+    colors = [COLORS[color_id] for color_id in color_data.keys()]
+    colors = [[channel / 255 for channel in color] for color in colors]
+    fig, ax = plt.subplots()
+    ax.pie(color_data.values(), labels=color_data.keys(), autopct='%1.1f%%', colors=colors)
+    plt.title('Color Diagram of R/Place 2017 Data')
     plt.show()
 
 def load_config():
@@ -183,6 +202,7 @@ def parse_args():
     parser.add_argument('-g', '--generate', action='store_true', help='Generate image from data (pixel placement)')
     parser.add_argument('-hm', '--heatmap', action='store_true', help='Generate heatmap from data (placement count per pixel)')
     parser.add_argument('-hi', '--histogram', action='store_true', help='Generate histogram from data (pixel count per hour)')
+    parser.add_argument('-co', '--color', action='store_true', help='Generate circlar diagram of color usage from data (color count)')
     return parser.parse_args()
 
 if __name__ == '__main__':
@@ -215,6 +235,11 @@ if __name__ == '__main__':
         data = get_data(collection, {})
         print(f"Data loaded, generating histogram... (this may take a while)")
         generate_histogram(data)
+    elif args.color:
+        print("Generating color diagram...")
+        data = get_data(collection, {})
+        print(f"Data loaded, generating color diagram... (this may take a while)")
+        generate_color_diagram(data)
     else:
         print("Please provide an argument")
         exit(1)
