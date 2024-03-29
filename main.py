@@ -122,6 +122,22 @@ def get_data(collection, query) -> list:
     result = collection.find(query)
     return result
 
+def get_distinct_users(collection) -> list:
+    """Get distinct users from MongoDB
+
+    Args:
+        collection (MongoClient): MongoDB collection
+
+    Returns:
+        list: List of distinct users
+    """
+    pipeline = [
+        {"$group": {"_id": "$user"}},
+        {"$project": {"_id": 0, "user": "$_id"}}
+    ]
+    result = list(collection.aggregate(pipeline))
+    return [doc['user'] for doc in result]
+
 def generate_image(data) -> None:
     """Generate image from data
 
@@ -237,6 +253,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument('-hm', '--heatmap', action='store_true', help='Generate heatmap from data (placement count per pixel)')
     parser.add_argument('-hi', '--histogram', action='store_true', help='Generate histogram from data (pixel count per hour)')
     parser.add_argument('-co', '--color', action='store_true', help='Generate circlar diagram of color usage from data (color count)')
+    parser.add_argument('-u', '--user', action='store_true', help='Get distinct users from data')
     return parser.parse_args()
 
 if __name__ == '__main__':
@@ -274,6 +291,10 @@ if __name__ == '__main__':
         data = get_data(collection, {})
         print("Data loaded, generating color diagram... (this may take a while)")
         generate_color_diagram(data)
+    elif args.user:
+        print("Getting distinct users...")
+        users = get_distinct_users(collection)
+        print(f"Distinct users: {len(users)}")
     else:
         print("Please provide an argument")
         exit(1)

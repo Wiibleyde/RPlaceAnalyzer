@@ -40,6 +40,7 @@ python main.py -h
 - `-hm` ou `--heatmap` : Génère la heatmap de l'événement
 - `-hi` ou `--histogram` : Génère l'histogramme de l'événement (nombre de pixels placés par heure)
 - `-co` ou `--color` : Génère le diagramme des couleurs de l'événement
+- `-u` ou `--users` : Donne le nombre d'utilisateurs ayant participé à l'événement
 
 Et c'est tout !
 
