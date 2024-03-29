@@ -1,14 +1,14 @@
 import gzip
-import numpy as np
-import matplotlib.pyplot as plt
-import matplotlib.dates as mdates
-import pandas as pd
-from pymongo import MongoClient
 from datetime import datetime
-import requests
-from os import path, makedirs
 import argparse
 import yaml
+from pymongo import MongoClient
+import requests
+from os import path, makedirs
+import matplotlib.pyplot as plt
+import matplotlib.dates as mdates
+import numpy as np
+import pandas as pd
 
 CONFIG = {
     'db': {
@@ -244,7 +244,7 @@ if __name__ == '__main__':
     args = parse_args()
     db = init_db()
     collection = init_collection(db)
-    print(f"DB and collection initialized")
+    print("DB and collection initialized")
     if args.init:
         print("Initializing...", end='\r')
         print("Downloading file... (this may take a while)")
@@ -252,27 +252,27 @@ if __name__ == '__main__':
         files = [FILES_PATH + 'tile_placements.csv']
         print("File downloaded, loading data to DB...", end='\r')
         load_data_to_db([FILES_PATH + 'tile_placements.csv'], collection)
-        print(f"Data loaded to DB, exiting program")
+        print("Data loaded to DB, exiting program")
         exit(0)
     elif args.generate:
         print("Generating image...")
         data = get_data(collection, {})
-        print(f"Data loaded, generating image... (this may take a while)")
+        print("Data loaded, generating image... (this may take a while)")
         generate_image(data)
     elif args.heatmap:
         print("Generating heatmap...")
         data = get_data(collection, {})
-        print(f"Data loaded, generating heatmap... (this may take a while)")
+        print("Data loaded, generating heatmap... (this may take a while)")
         generate_heatmap(data)
     elif args.histogram:
         print("Generating histogram...")
         data = get_data(collection, {})
-        print(f"Data loaded, generating histogram... (this may take a while)")
+        print("Data loaded, generating histogram... (this may take a while)")
         generate_histogram(data)
     elif args.color:
         print("Generating color diagram...")
         data = get_data(collection, {})
-        print(f"Data loaded, generating color diagram... (this may take a while)")
+        print("Data loaded, generating color diagram... (this may take a while)")
         generate_color_diagram(data)
     else:
         print("Please provide an argument")
