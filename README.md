@@ -42,9 +42,11 @@ Et c'est tout !
 
 - Image final de la RPlace de 2017 :
 
-- Graphique du nombre de pixels placés par heure :
+![RPlace 2017](./img/rplace_final.png)
 
 - Heatmap de l'événement :
+
+- Graphique du nombre de pixels placés par heure :
 
 - Diagramme des couleurs de l'événement :
 ![Color Piechart](./img/color-piechart.png)
