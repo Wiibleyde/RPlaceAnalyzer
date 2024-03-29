@@ -49,6 +49,11 @@ Et c'est tout !
         - De même pour le logo rond en bas au milieu, qui a été beaucoup modifié qui semble être le logo de la communauté OSU (qui est en générale très active sur ce genre d'événement).
 
 - Graphique du nombre de pixels placés par heure :
+    - ![Histogram](./img/pixel_histogram.png)
+        - Sur ce graphique, on peut remarquer que le nombre de pixels placés par heure est très variable.
+            - Au début de l'événement, le nombre de pixels placés est très faible, ce qui est normal car le R/Place de 2017 était la première édition de ce genre d'événement.
+            - Puis les pics de pixels placés sont chaques jours à 20h, ce qui est probablement dû à la fin des cours / travail pour les utilisateurs.
+            - Le pic le plus important est le 2 avril à 20h, au nombre de 401442 pixels placés.
 
 - Diagramme des couleurs de l'événement :
     - ![Color Piechart](./img/color-piechart.png)
