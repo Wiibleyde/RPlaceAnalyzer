@@ -33,6 +33,7 @@ python main.py -h
 - `-i` ou `--init` : Initialise les données de l'événement (OBLIGATOIRE AVANT TOUTE AUTRE ACTION (sauf -h))
 - `-g` ou `--generate` : Génère l'image finale du RPlace
 - `-hm` ou `--heatmap` : Génère la heatmap de l'événement
+- `-hi` ou `--histogram` : Génère l'histogramme de l'événement (nombre de pixels placés par heure)
 
 Et c'est tout !
 

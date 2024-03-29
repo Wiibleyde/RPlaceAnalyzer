@@ -1,6 +1,7 @@
 import gzip
 import numpy as np
 import matplotlib.pyplot as plt
+import matplotlib.dates as mdates
 import pandas as pd
 from pymongo import MongoClient
 from datetime import datetime
@@ -144,6 +145,33 @@ def generate_heatmap(data):
     plt.axis(False)
     plt.show()
 
+def generate_histogram(data):
+    histogram_data = {}
+    for row in data:
+        try:
+            timestamp = row['ts']
+            # Truncate timestamp to date only (year, month, day, hour)
+            timestamp = timestamp.replace(minute=0, second=0, microsecond=0)
+            if timestamp in histogram_data:
+                histogram_data[timestamp] += 1
+            else:
+                histogram_data[timestamp] = 1
+        except Exception as e:
+            print(f"Error processing row: {row} with error: {e}")
+            continue
+
+    # Generate histogram
+    fig, ax = plt.subplots()
+    ax.bar(histogram_data.keys(), histogram_data.values(), width=0.03)  # Use bar chart for pre-counted data
+    ax.xaxis.set_major_locator(mdates.HourLocator(interval = 2))  # Set major ticks every hour
+    ax.xaxis.set_major_formatter(mdates.DateFormatter('%Y-%m-%d %Hh'))  # Format x-axis to show hour and minute
+
+    plt.xlabel('Hour')
+    plt.ylabel('Count')
+    plt.xticks(rotation=45)
+    plt.title('Histogram of Data')
+    plt.show()
+
 def load_config():
     with open('config.yaml') as f:
         config = yaml.load(f, Loader=yaml.FullLoader)
@@ -152,8 +180,9 @@ def load_config():
 def parse_args():
     parser = argparse.ArgumentParser(description='Generate image from r/place data')
     parser.add_argument('-i', '--init', action='store_true', help='Download file and initialize DB and load data')
-    parser.add_argument('-g', '--generate', action='store_true', help='Generate image from data')
-    parser.add_argument('-hm', '--heatmap', action='store_true', help='Generate heatmap from data')
+    parser.add_argument('-g', '--generate', action='store_true', help='Generate image from data (pixel placement)')
+    parser.add_argument('-hm', '--heatmap', action='store_true', help='Generate heatmap from data (placement count per pixel)')
+    parser.add_argument('-hi', '--histogram', action='store_true', help='Generate histogram from data (pixel count per hour)')
     return parser.parse_args()
 
 if __name__ == '__main__':
@@ -181,6 +210,11 @@ if __name__ == '__main__':
         data = get_data(collection, {})
         print(f"Data loaded, generating heatmap... (this may take a while)")
         generate_heatmap(data)
+    elif args.histogram:
+        print("Generating histogram...")
+        data = get_data(collection, {})
+        print(f"Data loaded, generating histogram... (this may take a while)")
+        generate_histogram(data)
     else:
         print("Please provide an argument")
         exit(1)
