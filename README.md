@@ -26,6 +26,8 @@ pip install -r requirements.txt
 
 ## Utilisation
 
+**ATTENTION :** Avant d'utiliser RPlace Analyzer, il est **OBLIGATOIRE** de disposer d'une base de donnée MongoDB !
+
 Pour utiliser RPlace Analyzer, il suffit de lancer le script `main.py` avec un argument correspondant à l'action que vous souhaitez effectuer.
 
 ```bash
