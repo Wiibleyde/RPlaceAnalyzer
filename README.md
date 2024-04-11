@@ -29,7 +29,7 @@ pip install -r requirements.txt
 
 ## Utilisation
 
-**ATTENTION :** Avant d'utiliser RPlace Analyzer, il est **OBLIGATOIRE** de disposer d'une base de donnée MongoDB !
+**ATTENTION :** Avant d'utiliser RPlace Analyzer, il est **OBLIGATOIRE** de disposer d'une base de donnée MongoDB (sans utilisateur/mot de passe) !
 
 Pour utiliser RPlace Analyzer, il suffit de lancer le script `main.py` avec un argument correspondant à l'action que vous souhaitez effectuer.
 
@@ -37,10 +37,18 @@ Pour utiliser RPlace Analyzer, il suffit de lancer le script `main.py` avec un a
 python main.py -h
 ```
 
+Au premier lancement, un fichier de configuration (pour la connexion avec la DB MongoDB) sera créé. Il suffit de le remplir avec les informations de votre base de donnée.
+
+```yaml
+db:
+  host: localhost
+  port: 27017
+```
+
 ## Actions
 
 - `-h` ou `--help` : Affiche l'aide
-- `-i` ou `--init` : Initialise les données de l'événement (OBLIGATOIRE AVANT TOUTE AUTRE ACTION (sauf -h))
+- `-i` ou `--init` : Initialise les données de l'événement **(OBLIGATOIRE AVANT TOUTE AUTRE ACTION (sauf -h))**
 - `-g` ou `--generate` : Génère l'image finale du RPlace
 - `-hm` ou `--heatmap` : Génère la heatmap de l'événement
 - `-hi` ou `--histogram` : Génère l'histogramme de l'événement (nombre de pixels placés par heure)
