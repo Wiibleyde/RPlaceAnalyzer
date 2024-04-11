@@ -76,3 +76,18 @@ Et c'est tout !
 - Nombre de pixels placés par le plus actif : **656** *(0.0039% des pixels (Bot ou pas))*
 - Le pixel le plus modifié : **(999, 999)** avec **37 214** modifications
 - Le pixel le moins modifié : **(161, 489)** avec **1** modification (Le pixel est noir)
+
+## Auteurs
+
+- [**Wiibleyde**](https://github.com/Wiibleyde)
+- [**Alexy845**](https://github.com/Alexy845)
+- [**Kaamii**](https://github.com/Joelancel)
+
+## License
+
+Ce projet est sous licence MIT - voir le fichier [LICENSE](LICENSE) pour plus d'informations.
+
+## Remerciements
+
+- [**Reddit**](https://www.reddit.com/r/place/) pour l'événement R/Place
+- **The Reddit Admins** pour les données de l'événement
