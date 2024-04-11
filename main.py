@@ -65,7 +65,7 @@ def download_file() -> None:
     """
     if not path.exists(FILES_PATH):
         makedirs(FILES_PATH)
-    response = requests.get(CSV_LINK)
+    response = requests.get(CSV_LINK, timeout=5)
     with open(FILES_PATH + 'tile_placements.csv', 'wb') as f:
         f.write(response.content)
 
