@@ -304,7 +304,7 @@ def generate_histogram(data) -> None:
         except Exception as e:
             print(f"Error processing row: {row} with error: {e}")
             continue
-    fig, ax = plt.subplots()
+    _, ax = plt.subplots()
     ax.bar(histogram_data.keys(), histogram_data.values(), width=0.03)
     ax.xaxis.set_major_locator(mdates.HourLocator(interval = 2))
     ax.xaxis.set_major_formatter(mdates.DateFormatter('%Y-%m-%d %Hh'))
@@ -333,8 +333,8 @@ def generate_color_diagram(data) -> None:
             continue
     colors = [COLORS[color_id] for color_id in color_data.keys()]
     colors = [[channel / 255 for channel in color] for color in colors]
-    fig, ax = plt.subplots()
-    wedges, texts, autotexts = ax.pie(color_data.values(), autopct='%1.1f%%', pctdistance=1.1, colors=colors)
+    _, ax = plt.subplots()
+    _, _, autotexts = ax.pie(color_data.values(), autopct='%1.1f%%', pctdistance=1.1, colors=colors)
     plt.setp(autotexts, size=8, weight="bold")
     ax.axis('equal')
     plt.title('Color Diagram of Data')
