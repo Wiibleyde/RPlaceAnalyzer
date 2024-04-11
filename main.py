@@ -347,7 +347,8 @@ def load_config() -> dict:
         dict: Config
     """
     with open('config.yaml') as f:
-        config = yaml.load(f, Loader=yaml.FullLoader)
+        # use safe_load instead load
+        config = yaml.safe_load(f)
     return config
 
 def parse_args() -> argparse.Namespace:
@@ -408,7 +409,7 @@ if __name__ == '__main__':
         print("Getting distinct users...")
         users = get_distinct_users(collection)
         print(f"Distinct users: {len(users)}")
-    elif args.bot:
+    elif args.bots:
         print("Getting bot users...")
         users = get_bot_users(collection)
         print(f"Bot users: {len(users)}")
