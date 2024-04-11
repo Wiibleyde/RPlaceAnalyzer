@@ -41,6 +41,10 @@ python main.py -h
 - `-hi` ou `--histogram` : Génère l'histogramme de l'événement (nombre de pixels placés par heure)
 - `-co` ou `--color` : Génère le diagramme des couleurs de l'événement
 - `-u` ou `--users` : Donne le nombre d'utilisateurs ayant participé à l'événement
+- `-b` ou `--bots` : Donne le nombre de 'bot'/tricheurs ayant participé à l'événement
+- `-mu` ou `--mostuser` : Donne un top 10 des utilisateurs les plus actifs
+- `-mp` ou `--mostpixel` : Donne le pixel le plus modifié
+- `-lp` ou `--lesspixel` : Donne le pixel le moins modifié
 
 Et c'est tout !
 
@@ -65,5 +69,10 @@ Et c'est tout !
 - ![Color Piechart](./img/color-piechart.png)
     - Sur ce diagramme, on peut voir que le noir est la couleur la plus utilisée, suivie du blanc et du rouge. L'utilisation majoritaire du noir peut s'expliquer par le fait que les utilisateurs ont utilisé cette couleur pour effacer des dessins déjà présents ou créer ce que l'on nomme le "Void".
 
-<!-- ### Liste des utilisateurs/bots participants à l'événement : -->
-
+### Stats en tout genre :
+- Nombre de pixels placés : **16 559 897**
+- Nombre d'utilisateurs ayant participé : **1 166 924**
+- Nombre de 'bot'/tricheurs (Utilisateur qui a placé des pixels avec moins de 5 minutes d'intervalle) ayant participé : **383 108** *(Valeur étonnante car 32.83% des utilisateurs seraient des 'bots')*
+- Nombre de pixels placés par le plus actif : **656** *(0.0039% des pixels (Bot ou pas))*
+- Le pixel le plus modifié : **(999, 999)** avec **37 214** modifications
+- Le pixel le moins modifié : **(161, 489)** avec **1** modification (Le pixel est noir)

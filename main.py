@@ -138,6 +138,115 @@ def get_distinct_users(collection) -> list:
     result = list(collection.aggregate(pipeline))
     return [doc['user'] for doc in result]
 
+def get_bot_users(collection) -> list:
+    """Get bot users from MongoDB (users with perfect 5min interval between pixel placements)
+
+    Args:
+        collection (MongoClient): MongoDB collection
+
+    Returns:
+        list: List of bot users
+    """
+    pipeline = [
+        {"$sort": {"ts": 1}},
+        {"$group": {
+            "_id": "$user",
+            "ts": {"$push": "$ts"}
+        }},
+        {"$project": {
+            "_id": 0,
+            "user": "$_id",
+            "ts": 1
+        }}
+    ]
+    result = list(collection.aggregate(pipeline))
+    bot_users = []
+    for doc in result:
+        timestamps = doc['ts']
+        for i in range(len(timestamps) - 1):
+            if (timestamps[i + 1] - timestamps[i]).total_seconds() >= 300:
+                break
+        else:
+            bot_users.append(doc['user'])
+    return bot_users
+
+def get_most_active_users(collection) -> list:
+    """Get most active users from MongoDB
+
+    Args:
+        collection (MongoClient): MongoDB collection
+
+    Returns:
+        list: List of most active users
+    """
+    pipeline = [
+        {"$group": {
+            "_id": "$user",
+            "count": {"$sum": 1}
+        }},
+        {"$sort": {"count": -1}},
+        {"$limit": 10},
+        {"$project": {
+            "_id": 0,
+            "user": "$_id",
+            "count": 1
+        }}
+    ]
+    result = list(collection.aggregate(pipeline))
+    return result
+
+def get_most_modified_pixel(collection) -> dict:
+    """Get most modified pixel from MongoDB
+
+    Args:
+        collection (MongoClient): MongoDB collection
+
+    Returns:
+        dict: Most modified pixel
+    """
+    pipeline = [
+        {"$group": {
+            "_id": {"x": "$x_coordinate", "y": "$y_coordinate"},
+            "count": {"$sum": 1}
+        }},
+        {"$sort": {"count": -1}},
+        {"$limit": 1},
+        {"$project": {
+            "_id": 0,
+            "x": "$_id.x",
+            "y": "$_id.y",
+            "count": 1
+        }}
+    ]
+    result = list(collection.aggregate(pipeline))
+    return result[0]
+
+def get_less_modified_pixel(collection) -> dict:
+    """Get less modified pixel from MongoDB
+
+    Args:
+        collection (MongoClient): MongoDB collection
+
+    Returns:
+        dict: Less modified pixel
+    """
+    pipeline = [
+        {"$group": {
+            "_id": {"x": "$x_coordinate", "y": "$y_coordinate"},
+            "count": {"$sum": 1}
+        }},
+        {"$sort": {"count": 1}},
+        {"$limit": 1},
+        {"$project": {
+            "_id": 0,
+            "x": "$_id.x",
+            "y": "$_id.y",
+            "count": 1
+        }}
+    ]
+    result = list(collection.aggregate(pipeline))
+    return result[0]
+
 def generate_image(data) -> None:
     """Generate image from data
 
@@ -247,13 +356,17 @@ def parse_args() -> argparse.Namespace:
     Returns:
         argparse.Namespace: Arguments
     """
-    parser = argparse.ArgumentParser(description='Generate image from r/place data')
+    parser = argparse.ArgumentParser(description='R/Place 2017 Data Analysis')
     parser.add_argument('-i', '--init', action='store_true', help='Download file and initialize DB and load data')
     parser.add_argument('-g', '--generate', action='store_true', help='Generate image from data (pixel placement)')
     parser.add_argument('-hm', '--heatmap', action='store_true', help='Generate heatmap from data (placement count per pixel)')
     parser.add_argument('-hi', '--histogram', action='store_true', help='Generate histogram from data (pixel count per hour)')
     parser.add_argument('-co', '--color', action='store_true', help='Generate circlar diagram of color usage from data (color count)')
     parser.add_argument('-u', '--user', action='store_true', help='Get distinct users from data')
+    parser.add_argument('-b', '--bots', action='store_true', help='Get bot users from data')
+    parser.add_argument('-mu', '--mostuser', action='store_true', help='Get most active users from data')
+    parser.add_argument('-mp', '--mostpixel', action='store_true', help='Get most modified pixel from data')
+    parser.add_argument('-lp', '--lesspixel', action='store_true', help='Get less modified pixel from data')
     return parser.parse_args()
 
 if __name__ == '__main__':
@@ -295,6 +408,23 @@ if __name__ == '__main__':
         print("Getting distinct users...")
         users = get_distinct_users(collection)
         print(f"Distinct users: {len(users)}")
+    elif args.bot:
+        print("Getting bot users...")
+        users = get_bot_users(collection)
+        print(f"Bot users: {len(users)}")
+    elif args.mostuser:
+        print("Getting most active users...")
+        users = get_most_active_users(collection)
+        for i, user in enumerate(users):
+            print(f"{i + 1}. User: {user['user']}, Count: {user['count']}")
+    elif args.mostpixel:
+        print("Getting most modified pixel...")
+        pixel = get_most_modified_pixel(collection)
+        print(f"Most modified pixel: \n- Coordonnées : {pixel['x']}, {pixel['y']}\n- Nombre de modifications : {pixel['count']}")
+    elif args.lesspixel:
+        print("Getting less modified pixel...")
+        pixel = get_less_modified_pixel(collection)
+        print(f"Less modified pixel: \n- Coordonnées : {pixel['x']}, {pixel['y']}\n- Nombre de modifications : {pixel['count']}")
     else:
         print("Please provide an argument")
         exit(1)
