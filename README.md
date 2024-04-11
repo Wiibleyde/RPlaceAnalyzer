@@ -12,7 +12,10 @@
     - [Heatmap de l'événement](#heatmap-de-lévénement)
     - [Graphique du nombre de pixels placés par heure](#graphique-du-nombre-de-pixels-placés-par-heure)
     - [Diagramme des couleurs de l'événement](#diagramme-des-couleurs-de-lévénement)
-    <!-- - [Liste des utilisateurs/bots participants à l'événement](#liste-des-utilisateursbots-participants-à-lévénement) -->
+    - [Stats en tout genre](#stats-en-tout-genre)
+- [Auteurs](#auteurs)
+- [License](#license)
+- [Remerciements](#remerciements)
 
 RPlace Analyzer est un outil permetttant d'analyser les données de l'événement RPlace 2017. Il permet de visualiser les données de l'événement.
 
@@ -84,6 +87,8 @@ Et c'est tout !
 - [**Wiibleyde**](https://github.com/Wiibleyde)
 - [**Alexy845**](https://github.com/Alexy845)
 - [**Kaamii**](https://github.com/Joelancel)
+
+[![Codacy Badge](https://app.codacy.com/project/badge/Grade/4df8acb62f5e48ce84461427ed827629)](https://app.codacy.com/gh/Wiibleyde/RPlaceAnalyzer/dashboard?utm_source=gh&utm_medium=referral&utm_content=&utm_campaign=Badge_grade)
 
 ## License
 
