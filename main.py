@@ -370,6 +370,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument('-lp', '--lesspixel', action='store_true', help='Get less modified pixel from data')
     return parser.parse_args()
 
+
 if __name__ == '__main__':
     CONFIG = load_config()
     args = parse_args()
